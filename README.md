@@ -1,4 +1,4 @@
-# Wordpress Server Timing
+# WordPress Server Timing
 
 Add Server-Timing header information from within your WordPress sites.
 

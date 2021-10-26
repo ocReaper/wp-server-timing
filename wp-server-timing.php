@@ -1,13 +1,13 @@
 <?php
 
 /*
- Plugin Name: WordPress Server Timing
+ Plugin Name: WP Server Timing
  Plugin URI: https://github.com/ocReaper/wordpress-server-timing
  Description: Add Server-Timing header information from within your WordPress sites.
  Author: ocReaper
- Version: 0.1.0
+ Version: 0.2.0
  Author URI: https://akosresch.wordpress.com/
- Text Domain: wordpress-server-timing
+ Text Domain: wp-server-timing
  */
 
 class WPServerTiming

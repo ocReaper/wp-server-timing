@@ -11,6 +11,10 @@ jobs:
         operating-system: [ubuntu-latest]
         php-versions: ['7.4', '8.0']
         wordpress-versions: ['4.9.18', 'latest']
+        exclude:
+          - operating-system: ubuntu-latest
+            php-versions: '8.0'
+            wordpress-versions: '4.9.18'
     services:
       mysql:
         image: mysql:5.7

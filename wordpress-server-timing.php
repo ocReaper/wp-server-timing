@@ -133,4 +133,6 @@ class WPServerTiming
 
 }
 
-$wpServerTiming = new WPServerTiming();
+global $wpServerTiming;
+
+$wpServerTiming= new WPServerTiming();

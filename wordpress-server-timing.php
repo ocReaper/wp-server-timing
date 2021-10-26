@@ -116,8 +116,11 @@ function flush_content_and_add_timig_headers() {
     $pluginTime = 'plugins;desc="Plugins loaded";dur='.(($timeplugins - $timestart) * 1000);
     $themeTime = 'theme;desc="Theme loaded";dur='.(($timeaftersetuptheme - $timesetuptheme) * 1000);
     $totalTime = 'total;desc="Total application run time";dur='.((microtime(true) - $requestStart) * 1000);
-    header('Server-Timing: ' . implode(', ', [$bootstrapTime, $dbTime, $globalQueryTime, $pluginTime, $themeTime, $wpLoadTime, $apiTime, $appTime, $totalTime]));
 
+    $data = [$bootstrapTime, $dbTime, $globalQueryTime, $pluginTime, $themeTime, $wpLoadTime, $apiTime, $appTime, $totalTime];
+    $data = apply_filters( 'wp_server_timing_flush_timing_headers', $data );
+
+    header('Server-Timing: ' . implode(', ', $data));
     ob_end_flush();
 }
 

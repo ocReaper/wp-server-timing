@@ -3,7 +3,7 @@
     "description": "Add Server-Timing header information from within your WordPress sites.",
     "type": "wordpress-plugin",
     "require": {
-        "php": "7.1"
+        "php": ">=7.4"
     },
     "license": "MIT",
     "authors": [

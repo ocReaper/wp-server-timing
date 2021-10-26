@@ -1,13 +1,13 @@
 <?php
 
 /*
- Plugin Name: WordPress Server Timing
+ Plugin Name: WP Server Timing
  Plugin URI: https://github.com/ocReaper/wordpress-server-timing
  Description: Add Server-Timing header information from within your WordPress sites.
  Author: ocReaper
- Version: 0.1.0
+ Version: 0.2.0
  Author URI: https://akosresch.wordpress.com/
- Text Domain: wordpress-server-timing
+ Text Domain: wp-server-timing
  */
 
 class WPServerTiming
@@ -21,6 +21,7 @@ class WPServerTiming
     public function __construct()
     {
         add_filter('http_request_args', array($this, 'add_time_start_to_http_request'), 10, 3);
+
         add_filter('http_api_debug', array($this, 'calculate_duration_after_http_request'), 10, 5);
 
         add_action('wp_loaded', array($this, 'add_time_metric_to_wp_loaded'), PHP_INT_MAX);
@@ -115,7 +116,7 @@ class WPServerTiming
     {
         global $timestart;
 
-        $requestStart = floatval($_SERVER['REQUEST_TIME_FLOAT']);
+        $requestStart = floatval($_SERVER['REQUEST_TIME_FLOAT'] ?? $timestart);
         $bootstrapTime = 'bootstrap;desc="WP setup";dur=' . (($timestart - $requestStart) * 1000);
         $wpLoadTime = 'wpload;desc="Non template logic";dur=' . (($this->timebootstrap - $this->timeaftersetuptheme) * 1000);
         $appTime = 'html;desc="Template processing";dur=' . ((microtime(true) - $this->timebootstrap) * 1000);

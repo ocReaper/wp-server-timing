@@ -8,7 +8,7 @@ Add Server-Timing header information from within your WordPress sites.
 
 ## Installation
 
-1. Copy the `wordpress-server-timing` folder to `wp-content/plugins`.
+1. Copy the `wp-server-timing` folder to `wp-content/plugins`.
 2. Activate the plugin through the WordPress admin panel.
 
 ## Usage
@@ -28,6 +28,14 @@ By default, the plugin measures only nine things, to keep it as light-weight as 
 Once the package is successfully installed, you can see your timing information in the developer tools of your browser. Here's an example from Chrome:
 
 ![image](screenshot-devtoolbar.png)
+
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md)!
+
+## Changelog
+
+Please see [CHANGELOG.md](CHANGELOG.md)!
 
 ## License
 

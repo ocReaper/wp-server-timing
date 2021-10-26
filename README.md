@@ -29,6 +29,14 @@ Once the package is successfully installed, you can see your timing information 
 
 ![image](screenshot-devtoolbar.png)
 
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md)!
+
+## Changelog
+
+Please see [CHANGELOG.md](CHANGELOG.md)!
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

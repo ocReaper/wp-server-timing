@@ -15,7 +15,6 @@ class WPServerTiming
     protected $timebootstrap = 0;
     protected $timehttprequest = 0;
     protected $timeplugins;
-    protected $timestart;
     protected $timesetuptheme;
     protected $timeaftersetuptheme;
 
@@ -114,14 +113,16 @@ class WPServerTiming
 
     public function flush_content_and_add_timig_headers()
     {
+        global $timestart;
+
         $requestStart = floatval($_SERVER['REQUEST_TIME_FLOAT']);
-        $bootstrapTime = 'bootstrap;desc="WP setup";dur=' . (($this->timestart - $requestStart) * 1000);
+        $bootstrapTime = 'bootstrap;desc="WP setup";dur=' . (($timestart - $requestStart) * 1000);
         $wpLoadTime = 'wpload;desc="Non template logic";dur=' . (($this->timebootstrap - $this->timeaftersetuptheme) * 1000);
         $appTime = 'html;desc="Template processing";dur=' . ((microtime(true) - $this->timebootstrap) * 1000);
         $apiTime = 'api;desc="API request processing";dur=' . $this->timehttprequest;
         $dbTime = 'db;desc="WPDB";dur=' . $this->calculate_query_time();
         $globalQueryTime = 'globals;desc="Global query setup";dur=' . (($this->timesetuptheme - $this->timeplugins) * 1000);
-        $pluginTime = 'plugins;desc="Plugins loaded";dur=' . (($this->timeplugins - $this->timestart) * 1000);
+        $pluginTime = 'plugins;desc="Plugins loaded";dur=' . (($this->timeplugins - $timestart) * 1000);
         $themeTime = 'theme;desc="Theme loaded";dur=' . (($this->timeaftersetuptheme - $this->timesetuptheme) * 1000);
         $totalTime = 'total;desc="Total application run time";dur=' . ((microtime(true) - $requestStart) * 1000);
         $data = [$bootstrapTime, $dbTime, $globalQueryTime, $pluginTime, $themeTime, $wpLoadTime, $apiTime, $appTime, $totalTime];

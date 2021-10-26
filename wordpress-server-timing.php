@@ -93,6 +93,16 @@ function start_collecting_response() {
 
 add_action('send_headers', 'start_collecting_response', -1);
 
+function generate_timing_header( $name, $description, $startTime, $endTime ) {
+    if (!isset($endTime)) {
+        $endTime = microtime(true );
+    }
+
+    $timeSpent = ( $endTime - $startTime ) * 1000;
+
+    return "$name;desc=\"$description\";dur=\"$timeSpent\"";
+}
+
 function flush_content_and_add_timig_headers() {
     global $timestart, $timeend, $timebootstrap, $timehttprequest, $timeplugins, $timesetuptheme, $timeaftersetuptheme;
 

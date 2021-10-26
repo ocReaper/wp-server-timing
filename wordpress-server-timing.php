@@ -34,6 +34,8 @@ class WPServerTiming
 
         add_action('send_headers', array($this, 'start_collecting_response'), -1);
 
+        add_action('send_headers', array( $this, 'start_collecting_response'), -1);
+
         add_action('wp_footer', array($this, 'flush_content_and_add_timig_headers'), PHP_INT_MAX);
     }
 
@@ -100,6 +102,16 @@ class WPServerTiming
         ob_start();
     }
 
+    function generate_timing_header( $name, $description, $startTime, $endTime ) {
+        if (!isset($endTime)) {
+            $endTime = microtime(true );
+        }
+
+        $timeSpent = ( $endTime - $startTime ) * 1000;
+
+        return "$name;desc=\"$description\";dur=\"$timeSpent\"";
+    }
+
     function flush_content_and_add_timig_headers()
     {
         $requestStart = floatval($_SERVER['REQUEST_TIME_FLOAT']);
@@ -112,8 +124,10 @@ class WPServerTiming
         $pluginTime = 'plugins;desc="Plugins loaded";dur=' . (($this->timeplugins - $this->timestart) * 1000);
         $themeTime = 'theme;desc="Theme loaded";dur=' . (($this->timeaftersetuptheme - $this->timesetuptheme) * 1000);
         $totalTime = 'total;desc="Total application run time";dur=' . ((microtime(true) - $requestStart) * 1000);
-        header('Server-Timing: ' . implode(', ', [$bootstrapTime, $dbTime, $globalQueryTime, $pluginTime, $themeTime, $wpLoadTime, $apiTime, $appTime, $totalTime]));
+        $data = [$bootstrapTime, $dbTime, $globalQueryTime, $pluginTime, $themeTime, $wpLoadTime, $apiTime, $appTime, $totalTime];
+        $data = apply_filters( array( $this, 'wp_server_timing_flush_timing_headers'), $data );
 
+        header('Server-Timing: ' . implode(', ', $data));
         ob_end_flush();
     }
 

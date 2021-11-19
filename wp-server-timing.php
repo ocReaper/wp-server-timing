@@ -12,15 +12,15 @@
 
 class WP_Server_Timing {
 
-	protected int $time_bootstrap = 0;
+	protected $time_bootstrap = 0;
 
-	protected int $time_http_request = 0;
+	protected $time_http_request = 0;
 
-	protected int $time_plugins;
+	protected $time_plugins;
 
-	protected int $time_setup_theme;
+	protected $time_setup_theme;
 
-	protected int $time_after_setup_theme;
+	protected $time_after_setup_theme;
 
 	public function __construct() {
 		add_filter( 'http_request_args', array( $this, 'add_time_start_to_http_request' ), 10, 3 );
@@ -97,14 +97,14 @@ class WP_Server_Timing {
 		ob_start();
 	}
 
-	public function generate_timing_header( $name, $description, $start_time, $end_time = null ): string {
+	public function generate_timing_header( string $name, string $description, int $start_time, ?int $end_time = null ): string {
 		if ( is_null( $end_time ) ) {
 			$end_time = microtime( true );
 		}
 
 		$time_spent = ( $end_time - $start_time ) * 1000;
 
-		return "$name;desc=\"$description\";dur=\"$time_spent\"";
+		return "$name;desc=\"$description\";dur=$time_spent";
 	}
 
 	public function flush_content_and_add_timing_headers() {

@@ -102,14 +102,8 @@ class WPServerTiming
         ob_start();
     }
 
-    public function generate_timing_header( $name, $description, $startTime, $endTime ) {
-        if (!isset($endTime)) {
-            $endTime = microtime(true );
-        }
-
-        $timeSpent = ( $endTime - $startTime ) * 1000;
-
-        return "$name;desc=\"$description\";dur=\"$timeSpent\"";
+    public function generate_timing_header( $name, $description, $duration ) {
+        return "$name;desc=\"$description\";dur=\"$duration\"";
     }
 
     public function flush_content_and_add_timig_headers()
@@ -117,15 +111,17 @@ class WPServerTiming
         global $timestart;
 
         $requestStart = floatval($_SERVER['REQUEST_TIME_FLOAT'] ?? $timestart);
-        $bootstrapTime = 'bootstrap;desc="WP setup";dur=' . (($timestart - $requestStart) * 1000);
-        $wpLoadTime = 'wpload;desc="Non template logic";dur=' . (($this->timebootstrap - $this->timeaftersetuptheme) * 1000);
-        $appTime = 'html;desc="Template processing";dur=' . ((microtime(true) - $this->timebootstrap) * 1000);
-        $apiTime = 'api;desc="API request processing";dur=' . $this->timehttprequest;
-        $dbTime = 'db;desc="WPDB";dur=' . $this->calculate_query_time();
-        $globalQueryTime = 'globals;desc="Global query setup";dur=' . (($this->timesetuptheme - $this->timeplugins) * 1000);
-        $pluginTime = 'plugins;desc="Plugins loaded";dur=' . (($this->timeplugins - $timestart) * 1000);
-        $themeTime = 'theme;desc="Theme loaded";dur=' . (($this->timeaftersetuptheme - $this->timesetuptheme) * 1000);
-        $totalTime = 'total;desc="Total application run time";dur=' . ((microtime(true) - $requestStart) * 1000);
+
+        $bootstrapTime = $this->generate_timing_header('bootstrap', 'WP setup', (($timestart - $requestStart) * 1000));
+        $wpLoadTime = $this->generate_timing_header('wpload', 'Non template logic', (($this->timebootstrap - $this->timeaftersetuptheme) * 1000));
+        $appTime = $this->generate_timing_header('html', 'Template processing', ((microtime(true) - $this->timebootstrap) * 1000));
+        $apiTime = $this->generate_timing_header('api', 'API request processing', $this->timehttprequest);
+        $dbTime = $this->generate_timing_header('db', 'WPDB', $this->calculate_query_time());
+        $globalQueryTime = $this->generate_timing_header('globals', 'Global query setup', (($this->timesetuptheme - $this->timeplugins) * 1000));
+        $pluginTime = $this->generate_timing_header('plugins', 'Plugins loaded', (($this->timeplugins - $timestart) * 1000));
+        $themeTime = $this->generate_timing_header('theme', 'Theme loaded', (($this->timeaftersetuptheme - $this->timesetuptheme) * 1000));
+        $totalTime = $this->generate_timing_header('total', 'Total application run time', ((microtime(true) - $requestStart) * 1000));
+
         $data = [$bootstrapTime, $dbTime, $globalQueryTime, $pluginTime, $themeTime, $wpLoadTime, $apiTime, $appTime, $totalTime];
         $data = apply_filters( 'wp_server_timing_flush_timing_headers', $data );
 

@@ -9,30 +9,22 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['7.2', '7.4', '8.0']
-        wordpress-versions: ['4.9.18', 'latest']
-        phpunit-versions: ['6.5.14', '7.5.20']
+        php-versions: ['7.4', '8.0']
+        wordpress-versions: ['5.3.0', 'latest']
+        phpunit-versions: ['7.5.20', '9.5.26']
         exclude:
           - operating-system: ubuntu-latest
             php-versions: '8.0'
-            wordpress-versions: '4.9.18'
+            wordpress-versions: '5.3.0'
             phpunit-versions: '7.5.20'
           - operating-system: ubuntu-latest
             php-versions: '8.0'
-            wordpress-versions: '4.9.18'
-            phpunit-versions: '6.5.14'
+            wordpress-versions: '5.3.0'
+            phpunit-versions: '9.5.26'
           - operating-system: ubuntu-latest
             php-versions: '7.4'
-            wordpress-versions: '4.9.18'
-            phpunit-versions: '7.5.20'
-          - operating-system: ubuntu-latest
-            php-versions: '7.4'
-            wordpress-versions: '4.9.18'
-            phpunit-versions: '6.5.14'
-          - operating-system: ubuntu-latest
-            php-versions: '7.2'
-            wordpress-versions: '4.9.18'
-            phpunit-versions: '7.5.20'
+            wordpress-versions: '5.3.0'
+            phpunit-versions: '9.5.26'
     services:
       mysql:
         image: mysql:5.7
